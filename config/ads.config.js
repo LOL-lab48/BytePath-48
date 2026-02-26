@@ -7,7 +7,7 @@ export const ads = [
     },
     {
         id: 2,
-        text: "Get fast, secure, random passwords with LokiGen! Numbers, sybols, uppercase to even what size password!",
+        text: "Get fast, secure, random passwords with LokiGen! Numbers, symbols, uppercase, even choose the size!",
         link: "https://lol-lab48.github.io/LockiGen/"
     },
     {
