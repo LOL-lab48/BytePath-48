@@ -1,9 +1,7 @@
 // components/lessonView.js
-// Handles the sidebar lesson list and click events
-
 export function renderLessonList(containerId, lessons, currentLesson) {
     const container = document.getElementById(containerId);
-    container.innerHTML = ''; // Clear previous items
+    container.innerHTML = '';
 
     lessons.forEach((lesson, index) => {
         const li = document.createElement('li');
@@ -20,7 +18,7 @@ export function renderLessonList(containerId, lessons, currentLesson) {
             if (index + 1 <= currentLesson) {
                 showLessonContent(lesson);
             } else {
-                alert('Lesson locked! Unlock at midnight or complete a bonus challenge.');
+                alert('Lesson locked! Unlock at midnight or via bonus challenge.');
             }
         });
 
@@ -30,5 +28,34 @@ export function renderLessonList(containerId, lessons, currentLesson) {
 
 function showLessonContent(lesson) {
     const lessonText = document.getElementById('lesson-text');
-    lessonText.innerHTML = `<h2>${lesson.title}</h2><p>${lesson.content}</p>`;
+    const editor = document.getElementById('editor');
+
+    // Show instructions
+    lessonText.innerHTML = `<h2>${lesson.title}</h2>`;
+    lesson.instructions.forEach((step, i) => {
+        lessonText.innerHTML += `<p><strong>Step ${i+1}:</strong> ${step}</p>`;
+    });
+
+    // Load starter code
+    editor.textContent = lesson.starterCode;
+
+    // Add "Check My Code" button
+    let existingBtn = document.getElementById('check-btn');
+    if (existingBtn) existingBtn.remove();
+
+    const checkBtn = document.createElement('button');
+    checkBtn.id = 'check-btn';
+    checkBtn.textContent = "Check My Code";
+    checkBtn.style.marginTop = "10px";
+    lessonText.appendChild(checkBtn);
+
+    checkBtn.addEventListener('click', () => {
+        const userCode = editor.textContent;
+        const result = lesson.checker(userCode);
+        if (result.passed) {
+            alert("✅ Well done! " + result.feedback);
+        } else {
+            alert("❌ Try again: " + result.feedback);
+        }
+    });
 }
