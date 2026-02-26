@@ -1,18 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodePath</title>
-    <link rel="stylesheet" href="styles/main.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Codivana</title>
+  <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
+  <div id="app">
+    <header id="top-bar">
+      <h1>Codivana</h1>
+      <div id="progress-bar">Lesson 1 / 180</div>
+    </header>
 
-    <div id="app">
-        <h1>Welcome to CodePath</h1>
-        <p>Your coding journey starts here.</p>
+    <div id="main-container">
+      <aside id="sidebar">
+        <ul id="lesson-list">
+          <!-- Lessons will be dynamically added here -->
+        </ul>
+      </aside>
+
+      <section id="lesson-content">
+        <div id="lesson-text">
+          <h2>Welcome!</h2>
+          <p>Start your coding journey today.</p>
+        </div>
+
+        <div id="code-section">
+          <div id="editor">/* Your code goes here */</div>
+          <iframe id="preview"></iframe>
+        </div>
+      </section>
     </div>
+  </div>
 
-    <script type="module" src="core/app.js"></script>
+  <script type="module" src="core/app.js"></script>
 </body>
 </html>
