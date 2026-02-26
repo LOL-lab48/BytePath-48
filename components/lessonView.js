@@ -1,15 +1,12 @@
-// Components: lessonView.js
-// This handles displaying the lesson sidebar and click events
-
+// lessonView.js - handles sidebar list & clicks
 export function renderLessonList(containerId, lessons, currentLesson) {
     const container = document.getElementById(containerId);
-    container.innerHTML = ''; // Clear old list
+    container.innerHTML = '';
 
     lessons.forEach((lesson, index) => {
         const li = document.createElement('li');
-        li.textContent = `${lesson.title}`;
+        li.textContent = lesson.title;
 
-        // Check if lesson is unlocked
         if (index + 1 <= currentLesson) {
             li.classList.add('unlocked');
         } else {
@@ -17,7 +14,6 @@ export function renderLessonList(containerId, lessons, currentLesson) {
             li.textContent += ' 🔒';
         }
 
-        // Click event
         li.addEventListener('click', () => {
             if (index + 1 <= currentLesson) {
                 showLessonContent(lesson);
@@ -30,7 +26,6 @@ export function renderLessonList(containerId, lessons, currentLesson) {
     });
 }
 
-// Placeholder: displays lesson content in main area
 function showLessonContent(lesson) {
     const lessonText = document.getElementById('lesson-text');
     lessonText.innerHTML = `<h2>${lesson.title}</h2><p>${lesson.content}</p>`;
