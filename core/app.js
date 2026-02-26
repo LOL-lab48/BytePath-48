@@ -5,7 +5,7 @@ import { getCurrentLesson } from './unlockSystem.js';
 import { startAdPopups } from '../components/adManager.js';
 
 // User data placeholder
-let userData = {
+export let userData = {
     currentLesson: 1,
     lastUnlockDate: null,
     totalLessons: lessons.length
@@ -19,5 +19,5 @@ window.addEventListener('DOMContentLoaded', () => {
     renderLessonList('lesson-list', lessons, currentLesson);
 
     // Start ad popups
-    startAdPopups();
+    startAdPopups(userData);
 });
