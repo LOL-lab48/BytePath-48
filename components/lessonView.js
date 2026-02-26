@@ -1,7 +1,9 @@
-// lessonView.js - handles sidebar list & clicks
+// components/lessonView.js
+// Handles the sidebar lesson list and click events
+
 export function renderLessonList(containerId, lessons, currentLesson) {
     const container = document.getElementById(containerId);
-    container.innerHTML = '';
+    container.innerHTML = ''; // Clear previous items
 
     lessons.forEach((lesson, index) => {
         const li = document.createElement('li');
@@ -18,7 +20,7 @@ export function renderLessonList(containerId, lessons, currentLesson) {
             if (index + 1 <= currentLesson) {
                 showLessonContent(lesson);
             } else {
-                alert('Lesson locked! Unlock at midnight or complete bonus challenge.');
+                alert('Lesson locked! Unlock at midnight or complete a bonus challenge.');
             }
         });
 
