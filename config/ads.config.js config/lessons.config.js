@@ -1,5 +1,7 @@
-export const lessons = [
-    { id: 1, title: 'Lesson 1: Introduction to HTML', content: 'Learn what HTML is and how it works.' },
-    { id: 2, title: 'Lesson 2: Basic Tags', content: 'Learn headings, paragraphs, links, and images.' },
-    { id: 3, title: 'Lesson 3: HTML Structure', content: 'Learn how to structure an HTML document.' }
-];
+export const lessons = Array.from({ length: 180 }, (_, i) => {
+    return {
+        id: i + 1,
+        title: `Lesson ${i + 1}`,
+        content: `This is lesson ${i + 1}. Learn and practice coding here.`
+    };
+});
