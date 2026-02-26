@@ -4,18 +4,18 @@ import { renderLessonList } from '../components/lessonView.js';
 import { getCurrentLesson } from './unlockSystem.js';
 import { startAdPopups } from '../components/adManager.js';
 
-// Placeholder user data
+// User data placeholder
 let userData = {
     currentLesson: 1,
     lastUnlockDate: null,
     totalLessons: lessons.length
 };
 
-// Run when page loads
+// Initialize app
 window.addEventListener('DOMContentLoaded', () => {
     const currentLesson = getCurrentLesson(userData);
 
-    // Render sidebar
+    // Render lesson sidebar
     renderLessonList('lesson-list', lessons, currentLesson);
 
     // Start ad popups
