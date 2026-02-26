@@ -1,4 +1,6 @@
 // components/lessonView.js
+import { userData } from '../core/app.js';
+
 export function renderLessonList(containerId, lessons, currentLesson) {
     const container = document.getElementById(containerId);
     container.innerHTML = '';
@@ -33,7 +35,7 @@ function showLessonContent(lesson) {
     // Show instructions
     lessonText.innerHTML = `<h2>${lesson.title}</h2>`;
     lesson.instructions.forEach((step, i) => {
-        lessonText.innerHTML += `<p><strong>Step ${i+1}:</strong> ${step}</p>`;
+        lessonText.innerHTML += `<p><strong>Step ${i + 1}:</strong> ${step}</p>`;
     });
 
     // Load starter code
@@ -54,6 +56,11 @@ function showLessonContent(lesson) {
         const result = lesson.checker(userCode);
         if (result.passed) {
             alert("✅ Well done! " + result.feedback);
+
+            // Optional: unlock next lesson automatically
+            if (userData.currentLesson < userData.totalLessons) {
+                userData.currentLesson++;
+            }
         } else {
             alert("❌ Try again: " + result.feedback);
         }
