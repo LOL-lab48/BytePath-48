@@ -1,11 +1,12 @@
 // components/adManager.js
 import { ads } from '../config/ads.config.js';
+import { userData } from '../core/app.js';
 
 let adIndex = 0;
 
 export function startAdPopups() {
-    showAd(); // Show first ad immediately
-    setInterval(showAd, 5 * 60 * 1000); // Every 5 minutes
+    showAd();
+    setInterval(showAd, 5 * 60 * 1000); // every 5 minutes
 }
 
 function showAd() {
@@ -23,7 +24,7 @@ function showAd() {
     `;
     document.body.appendChild(overlay);
 
-    // Countdown
+    // Countdown for close button
     let countdown = 10;
     const closeBtn = document.getElementById('ad-close');
     const timer = setInterval(() => {
@@ -36,16 +37,20 @@ function showAd() {
         }
     }, 1000);
 
-    // Click close
-    closeBtn.addEventListener('click', () => {
-        document.body.removeChild(overlay);
-    });
-
-    // Click anywhere on ad text → go to link
+    // Clicking ad text opens link AND unlocks next lesson
     const popup = document.getElementById('ad-popup');
     popup.addEventListener('click', (e) => {
         if (e.target.id !== 'ad-close') {
             window.open(ad.link, '_blank');
+
+            if (userData.currentLesson < userData.totalLessons) {
+                userData.currentLesson++;
+                alert(`🎉 Bonus! You unlocked Lesson ${userData.currentLesson} early.`);
+            }
         }
+    });
+
+    closeBtn.addEventListener('click', () => {
+        document.body.removeChild(overlay);
     });
 }
