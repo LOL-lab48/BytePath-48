@@ -4,72 +4,55 @@
     <meta charset="UTF-8">
     <title>BytePath 48</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bing Verification -->
+    <meta name="msvalidate.01" content="5E25B9B09A4FA84EF3B2F96A6CBFAF68" />
+
     <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
 
-    <!-- HEADER -->
-    <header>
-        <h1>BytePath 48</h1>
-        <p class="subtitle">Interactive Coding Platform</p>
-    </header>
+<header>
+    <h1>BytePath 48</h1>
+    <p class="subtitle">Master Coding in 180 Days</p>
+</header>
 
-    <!-- MAIN LAYOUT -->
-    <div id="container">
+<div id="container">
 
-        <!-- SIDEBAR -->
-        <aside>
-            <h3>Lessons</h3>
-            <ul id="lesson-list">
-                <!-- Lessons load here -->
-            </ul>
-        </aside>
+    <aside>
+        <h3>Lessons</h3>
+        <ul id="lesson-list"></ul>
+    </aside>
 
-        <!-- MAIN CONTENT -->
-        <main>
+    <main>
 
-            <!-- Lesson Title + Instructions -->
-            <section id="lesson-section">
-                <div id="lesson-text">
-                    <!-- Lesson content loads here -->
-                </div>
-            </section>
+        <section id="lesson-section">
+            <div id="lesson-text"></div>
+        </section>
 
-            <!-- Code Editor -->
-            <section id="editor-section">
-                <h3>Your Code</h3>
+        <section id="editor-section">
+            <h3>Your Code</h3>
+            <div id="editor-container">
+                <pre id="editor" contenteditable="true"></pre>
+            </div>
+            <button id="check-btn">Check My Code</button>
+        </section>
 
-                <div id="editor-container">
-                    <pre id="editor" contenteditable="true">
-// Type your code here
-                    </pre>
-                </div>
+        <section id="feedback-section">
+            <h3>Feedback</h3>
+            <div id="feedback-container"></div>
+        </section>
 
-                <button id="check-btn">Check My Code</button>
-            </section>
+        <section id="unlock-section">
+            <h3>Unlock Options</h3>
+            <div id="unlock-container"></div>
+        </section>
 
-            <!-- Feedback -->
-            <section id="feedback-section">
-                <h3>Feedback</h3>
-                <div id="feedback-container">
-                    <!-- Feedback appears here -->
-                </div>
-            </section>
+    </main>
+</div>
 
-            <!-- Unlock Section -->
-            <section id="unlock-section">
-                <h3>Unlock Options</h3>
-                <div id="unlock-container">
-                    <!-- Unlock buttons appear here -->
-                </div>
-            </section>
-
-        </main>
-    </div>
-
-    <!-- Load App -->
-    <script type="module" src="core/app.js"></script>
+<script type="module" src="core/app.js"></script>
 
 </body>
 </html>
