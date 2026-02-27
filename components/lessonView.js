@@ -1,8 +1,10 @@
-import { userData } from '../core/userData.js';
+// components/lessonView.js
+import { userData, saveUserData } from '../core/userData.js';
 import { lessons } from '../lessons.config.js';
 
 let currentLessonData = null;
 
+// ====== Render the Lesson Sidebar ======
 export function renderLessonList(containerId) {
     const container = document.getElementById(containerId);
     container.innerHTML = '';
@@ -29,6 +31,7 @@ export function renderLessonList(containerId) {
     });
 }
 
+// ====== Show Lesson Content ======
 export function showLessonContent(lesson) {
     currentLessonData = lesson;
 
@@ -46,19 +49,37 @@ export function showLessonContent(lesson) {
         <pre>${lesson.example}</pre>
     `;
 
+    // Load starter code into editor
     editor.textContent = lesson.starterCode;
+
+    // Clear previous feedback
     feedbackContainer.innerHTML = '';
 
+    // Add Unlock Buttons
     unlockContainer.innerHTML = `
-        <button id="ad-unlock-btn">Watch Ad (10s) to Unlock</button>
-        <button id="midnight-unlock-btn">Wait Until Midnight</button>
+        <button id="ad-unlock-btn" class="unlock-btn">Watch Ad (10s) to Unlock</button>
+        <button id="midnight-unlock-btn" class="unlock-btn">Wait Until Midnight</button>
     `;
+
+    // Style buttons (small improvement)
+    const buttons = unlockContainer.querySelectorAll('.unlock-btn');
+    buttons.forEach(btn => {
+        btn.style.padding = '10px 20px';
+        btn.style.margin = '5px';
+        btn.style.backgroundColor = '#4CAF50';
+        btn.style.color = 'white';
+        btn.style.border = 'none';
+        btn.style.borderRadius = '5px';
+        btn.style.cursor = 'pointer';
+        btn.onmouseover = () => btn.style.backgroundColor = '#45a049';
+        btn.onmouseout = () => btn.style.backgroundColor = '#4CAF50';
+    });
 
     setupUnlockButtons();
 }
 
+// ====== Setup Unlock Buttons ======
 function setupUnlockButtons() {
-
     document.getElementById('ad-unlock-btn').onclick = () => {
         simulateAdWatch();
     };
@@ -68,8 +89,7 @@ function setupUnlockButtons() {
     };
 }
 
-/* ===== WATCH AD UNLOCK ===== */
-
+// ====== Watch Ad Simulation ======
 function simulateAdWatch() {
     alert("Ad playing... please wait 10 seconds.");
 
@@ -79,10 +99,8 @@ function simulateAdWatch() {
     }, 10000);
 }
 
-/* ===== MIDNIGHT UNLOCK ===== */
-
+// ====== Wait Until Midnight Unlock ======
 function checkMidnightUnlock() {
-
     const now = new Date();
     const today = now.toDateString();
 
@@ -100,11 +118,11 @@ function checkMidnightUnlock() {
     }
 }
 
-/* ===== UNLOCK FUNCTION ===== */
-
+// ====== Unlock Next Lesson ======
 function unlockNextLesson() {
     if (userData.currentLesson < userData.totalLessons) {
         userData.currentLesson++;
-        renderLessonList('lesson-list');
+        saveUserData(); // Persist progress
+        renderLessonList('lesson-list'); // Refresh sidebar
     }
 }
