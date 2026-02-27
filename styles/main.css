@@ -35,15 +35,21 @@ main {
     padding-left: 10px;
 }
 
+#editor-container {
+    margin-top: 15px;
+}
+
 #editor {
-    border: 1px solid #ccc;
-    min-height: 150px;
+    border: 2px solid #333;
+    min-height: 200px;
     padding: 10px;
-    background: #f9f9f9;
-    overflow: auto;
+    background-color: #f4f4f4;
     font-family: monospace;
+    font-size: 14px;
+    overflow-y: auto;
     white-space: pre-wrap;
     word-wrap: break-word;
+    border-radius: 5px;
 }
 
 .locked {
