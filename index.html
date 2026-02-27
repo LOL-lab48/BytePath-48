@@ -6,35 +6,16 @@
     <link rel="stylesheet" href="styles/main.css">
 </head>
 <body>
-    <!-- Top Bar -->
-    <div id="top-bar">
-        <h1>BytePath 48</h1>
-        <div>User Dashboard</div>
-    </div>
-
-    <!-- Main Container -->
-    <div id="main-container">
-        <!-- Sidebar: Lessons -->
-        <div id="sidebar">
+    <h1>BytePath 48</h1>
+    <div id="container">
+        <aside>
             <ul id="lesson-list"></ul>
-        </div>
-
-        <!-- Lesson + Editor -->
-        <div id="lesson-content">
-            <div id="lesson-text">
-                <!-- Lesson instructions will appear here -->
-            </div>
-
-            <div id="code-section">
-                <div id="editor" contenteditable="true" spellcheck="false">
-                    /* Your code goes here */
-                </div>
-                <iframe id="preview"></iframe>
-            </div>
-        </div>
+        </aside>
+        <main>
+            <div id="lesson-text"></div>
+            <pre id="editor" contenteditable="true"></pre>
+        </main>
     </div>
-
-    <!-- Scripts -->
     <script type="module" src="core/app.js"></script>
 </body>
 </html>
