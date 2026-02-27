@@ -1,23 +1,24 @@
-// core/app.js
 import { lessons } from '../config/lessons.config.js';
 import { renderLessonList } from '../components/lessonView.js';
 import { getCurrentLesson } from './unlockSystem.js';
 import { startAdPopups } from '../components/adManager.js';
+import { userData } from './userData.js';
 
-// User data placeholder
-export let userData = {
-    currentLesson: 1,
-    lastUnlockDate: null,
-    totalLessons: lessons.length
-};
-
-// Initialize app
 window.addEventListener('DOMContentLoaded', () => {
     const currentLesson = getCurrentLesson(userData);
 
-    // Render lesson sidebar
     renderLessonList('lesson-list', lessons, currentLesson);
 
-    // Start ad popups
-    startAdPopups(userData);
+    // Auto-load first unlocked lesson
+    const firstLesson = lessons[currentLesson - 1];
+    if (firstLesson) {
+        import('../components/lessonView.js').then(({ showLessonContent }) => {
+            showLessonContent(firstLesson);
+        });
+    }
+
+    // Ads start after 5 minutes
+    setTimeout(() => {
+        startAdPopups(userData);
+    }, 5 * 60 * 1000);
 });
