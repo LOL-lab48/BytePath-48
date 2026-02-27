@@ -4,7 +4,6 @@ export async function gradeLesson(userCode, lessonRequirements) {
     let feedback = [];
     let passed = true;
 
-    // Structural checks
     if (lessonRequirements.mustContain) {
         lessonRequirements.mustContain.forEach((keyword) => {
             if (!userCode.includes(keyword)) {
@@ -14,7 +13,6 @@ export async function gradeLesson(userCode, lessonRequirements) {
         });
     }
 
-    // Execute code safely
     if (lessonRequirements.language === "javascript") {
         const result = await runJSCode(userCode);
 
@@ -23,21 +21,14 @@ export async function gradeLesson(userCode, lessonRequirements) {
             passed = false;
         }
 
-        if (
-            lessonRequirements.expectedOutput &&
-            result.output.trim() !== lessonRequirements.expectedOutput.trim()
-        ) {
-            feedback.push(
-                `❌ Output mismatch. Expected: "${lessonRequirements.expectedOutput}", Got: "${result.output}"`
-            );
+        if (lessonRequirements.expectedOutput &&
+            result.output.trim() !== lessonRequirements.expectedOutput.trim()) {
+            feedback.push(`❌ Output mismatch. Expected: "${lessonRequirements.expectedOutput}", Got: "${result.output}"`);
             passed = false;
         } else if (lessonRequirements.expectedOutput) {
             feedback.push(`✅ Output matches expected result`);
         }
     }
 
-    return {
-        passed,
-        feedback
-    };
+    return { passed, feedback };
 }
