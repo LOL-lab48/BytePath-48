@@ -1,5 +1,6 @@
+// components/adManager.js
 import { ads } from '../config/ads.config.js';
-import { userData } from '../core/app.js';
+import { userData } from '../core/userData.js';
 
 let adIndex = 0;
 
@@ -34,10 +35,12 @@ function showAd() {
         }
     }, 1000);
 
+    // Clicking popup opens ad
     const popup = document.getElementById('ad-popup');
     popup.addEventListener('click', (e) => {
         if (e.target.id !== 'ad-close') {
             window.open(ad.link, '_blank');
+            // Unlock next lesson bonus
             if (userData.currentLesson < userData.totalLessons) {
                 userData.currentLesson++;
                 alert(`🎉 Bonus! You unlocked Lesson ${userData.currentLesson} early.`);
