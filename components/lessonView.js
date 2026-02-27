@@ -1,7 +1,5 @@
-// components/lessonView.js
 import { userData } from '../core/app.js';
 import { gradeLesson } from '../core/gradingEngine.js';
-import { lessons } from '../config/lessons.config.js';
 import { startAdPopups } from './adManager.js';
 
 export function renderLessonList(containerId, lessons, currentLesson) {
@@ -31,31 +29,26 @@ export function renderLessonList(containerId, lessons, currentLesson) {
     });
 }
 
-async function showLessonContent(lesson) {
+export async function showLessonContent(lesson) {
     const lessonText = document.getElementById('lesson-text');
     const editor = document.getElementById('editor');
 
-    // Show instructions
     lessonText.innerHTML = `<h2>${lesson.title}</h2>`;
     lesson.instructions.forEach((step, i) => {
         lessonText.innerHTML += `<p><strong>Step ${i + 1}:</strong> ${step}</p>`;
     });
 
-    // Load starter code
     editor.textContent = lesson.starterCode;
 
-    // Remove old button if exists
     const existingBtn = document.getElementById('check-btn');
     if (existingBtn) existingBtn.remove();
 
-    // Add Check My Code button
     const checkBtn = document.createElement('button');
     checkBtn.id = 'check-btn';
     checkBtn.textContent = "Check My Code";
     checkBtn.style.marginTop = "10px";
     lessonText.appendChild(checkBtn);
 
-    // Feedback container
     let feedbackContainer = document.getElementById('feedback-container');
     if (!feedbackContainer) {
         feedbackContainer = document.createElement('div');
@@ -64,7 +57,6 @@ async function showLessonContent(lesson) {
         lessonText.appendChild(feedbackContainer);
     }
 
-    // Add unlock button container
     let unlockContainer = document.getElementById('unlock-container');
     if (!unlockContainer) {
         unlockContainer = document.createElement('div');
@@ -78,14 +70,13 @@ async function showLessonContent(lesson) {
     `;
 
     document.getElementById('ad-unlock-btn').addEventListener('click', () => {
-        startAdPopups(userData); // This triggers ad + bonus unlock
+        startAdPopups(userData);
     });
 
     document.getElementById('midnight-unlock-btn').addEventListener('click', () => {
         alert("⏰ The lesson will unlock automatically at midnight.");
     });
 
-    // Check My Code
     checkBtn.addEventListener('click', async () => {
         const userCode = editor.textContent;
 
@@ -95,7 +86,6 @@ async function showLessonContent(lesson) {
             mustContain: lesson.mustContain || []
         });
 
-        // Show feedback
         feedbackContainer.innerHTML = '';
         result.feedback.forEach(msg => {
             const p = document.createElement('p');
@@ -103,7 +93,6 @@ async function showLessonContent(lesson) {
             feedbackContainer.appendChild(p);
         });
 
-        // Unlock next lesson automatically if passed
         if (result.passed && userData.currentLesson < userData.totalLessons) {
             userData.currentLesson++;
         }
