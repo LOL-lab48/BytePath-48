@@ -1,4 +1,3 @@
-// components/lessonView.js
 import { userData } from '../core/userData.js';
 import { gradeLesson } from '../core/gradingEngine.js';
 import { startAdPopups } from './adManager.js';
@@ -43,7 +42,7 @@ export async function showLessonContent(lesson) {
     });
 
     // Load starter code
-    editor.textContent = lesson.starterCode;
+    editor.textContent = lesson.starterCode || "// Type your code here";
 
     // Add Check My Code button
     let checkBtn = document.getElementById('check-btn');
