@@ -1,5 +1,8 @@
 // components/lessonView.js
 import { userData } from '../core/app.js';
+import { gradeLesson } from '../core/gradingEngine.js';
+import { lessons } from '../config/lessons.config.js';
+import { startAdPopups } from './adManager.js';
 
 export function renderLessonList(containerId, lessons, currentLesson) {
     const container = document.getElementById(containerId);
@@ -28,7 +31,7 @@ export function renderLessonList(containerId, lessons, currentLesson) {
     });
 }
 
-function showLessonContent(lesson) {
+async function showLessonContent(lesson) {
     const lessonText = document.getElementById('lesson-text');
     const editor = document.getElementById('editor');
 
@@ -41,28 +44,68 @@ function showLessonContent(lesson) {
     // Load starter code
     editor.textContent = lesson.starterCode;
 
-    // Add "Check My Code" button
-    let existingBtn = document.getElementById('check-btn');
+    // Remove old button if exists
+    const existingBtn = document.getElementById('check-btn');
     if (existingBtn) existingBtn.remove();
 
+    // Add Check My Code button
     const checkBtn = document.createElement('button');
     checkBtn.id = 'check-btn';
     checkBtn.textContent = "Check My Code";
     checkBtn.style.marginTop = "10px";
     lessonText.appendChild(checkBtn);
 
-    checkBtn.addEventListener('click', () => {
-        const userCode = editor.textContent;
-        const result = lesson.checker(userCode);
-        if (result.passed) {
-            alert("✅ Well done! " + result.feedback);
+    // Feedback container
+    let feedbackContainer = document.getElementById('feedback-container');
+    if (!feedbackContainer) {
+        feedbackContainer = document.createElement('div');
+        feedbackContainer.id = 'feedback-container';
+        feedbackContainer.style.marginTop = "10px";
+        lessonText.appendChild(feedbackContainer);
+    }
 
-            // Optional: unlock next lesson automatically
-            if (userData.currentLesson < userData.totalLessons) {
-                userData.currentLesson++;
-            }
-        } else {
-            alert("❌ Try again: " + result.feedback);
+    // Add unlock button container
+    let unlockContainer = document.getElementById('unlock-container');
+    if (!unlockContainer) {
+        unlockContainer = document.createElement('div');
+        unlockContainer.id = 'unlock-container';
+        unlockContainer.style.marginTop = "10px";
+        lessonText.appendChild(unlockContainer);
+    }
+    unlockContainer.innerHTML = `
+        <button id="ad-unlock-btn">Watch Ad to Unlock Next Lesson</button>
+        <button id="midnight-unlock-btn">Wait Until Midnight to Unlock</button>
+    `;
+
+    document.getElementById('ad-unlock-btn').addEventListener('click', () => {
+        startAdPopups(userData); // This triggers ad + bonus unlock
+    });
+
+    document.getElementById('midnight-unlock-btn').addEventListener('click', () => {
+        alert("⏰ The lesson will unlock automatically at midnight.");
+    });
+
+    // Check My Code
+    checkBtn.addEventListener('click', async () => {
+        const userCode = editor.textContent;
+
+        const result = await gradeLesson(userCode, {
+            language: lesson.language,
+            expectedOutput: lesson.expectedOutput,
+            mustContain: lesson.mustContain || []
+        });
+
+        // Show feedback
+        feedbackContainer.innerHTML = '';
+        result.feedback.forEach(msg => {
+            const p = document.createElement('p');
+            p.textContent = msg;
+            feedbackContainer.appendChild(p);
+        });
+
+        // Unlock next lesson automatically if passed
+        if (result.passed && userData.currentLesson < userData.totalLessons) {
+            userData.currentLesson++;
         }
     });
 }
