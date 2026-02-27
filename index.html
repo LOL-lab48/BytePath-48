@@ -3,56 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>BytePath 48</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Bing Verification -->
+    <!-- Required Meta -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="msvalidate.01" content="5E25B9B09A4FA84EF3B2F96A6CBFAF68" />
 
+    <!-- CSS -->
     <link rel="stylesheet" href="styles/main.css">
 </head>
-
 <body>
 
-<header>
-    <h1>BytePath 48</h1>
-    <p class="subtitle">Master Coding in 180 Days</p>
-</header>
+    <header>
+        <h1>BytePath 48</h1>
+        <p>Interactive Coding Platform</p>
+    </header>
 
-<div id="container">
+    <div class="layout">
 
-    <aside>
-        <h3>Lessons</h3>
-        <ul id="lesson-list"></ul>
-    </aside>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <h2>Lessons</h2>
+            <ul id="lesson-list"></ul>
+        </aside>
 
-    <main>
+        <!-- Main Content -->
+        <main class="content">
 
-        <section id="lesson-section">
-            <div id="lesson-text"></div>
-        </section>
-
-        <section id="editor-section">
-            <h3>Your Code</h3>
-            <div id="editor-container">
-                <pre id="editor" contenteditable="true"></pre>
+            <div id="lesson-text">
+                <!-- Lesson content loads here -->
             </div>
-            <button id="check-btn">Check My Code</button>
-        </section>
 
-        <section id="feedback-section">
-            <h3>Feedback</h3>
+            <h3>Your Code</h3>
+
+            <!-- Editable Code Area -->
+            <div 
+                id="editor" 
+                contenteditable="true" 
+                spellcheck="false"
+                class="editor">
+                // Type your code here
+            </div>
+
+            <button id="check-btn" class="primary-btn">
+                Check My Code
+            </button>
+
             <div id="feedback-container"></div>
-        </section>
 
-        <section id="unlock-section">
-            <h3>Unlock Options</h3>
             <div id="unlock-container"></div>
-        </section>
 
-    </main>
-</div>
+        </main>
 
-<script type="module" src="core/app.js"></script>
+    </div>
+
+    <!-- IMPORTANT: Must be module -->
+    <script type="module" src="core/app.js"></script>
 
 </body>
 </html>
