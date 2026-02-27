@@ -1,12 +1,8 @@
-// core/executionEngine.js
-
 export function runJSCode(userCode, timeout = 2000) {
     return new Promise((resolve) => {
         const worker = new Worker('../workers/jsWorker.js');
-
         let finished = false;
 
-        // Set up timeout
         const timer = setTimeout(() => {
             if (!finished) {
                 worker.terminate();
@@ -17,7 +13,6 @@ export function runJSCode(userCode, timeout = 2000) {
             }
         }, timeout);
 
-        // Listen for worker messages
         worker.onmessage = (e) => {
             finished = true;
             clearTimeout(timer);
@@ -25,7 +20,6 @@ export function runJSCode(userCode, timeout = 2000) {
             worker.terminate();
         };
 
-        // Send code to worker
         worker.postMessage(userCode);
     });
 }
