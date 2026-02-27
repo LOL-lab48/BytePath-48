@@ -1,4 +1,3 @@
-// components/adManager.js
 import { ads } from '../config/ads.config.js';
 import { userData } from '../core/userData.js';
 
