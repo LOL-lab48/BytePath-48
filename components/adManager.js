@@ -1,4 +1,3 @@
-// components/adManager.js
 import { ads } from '../config/ads.config.js';
 import { userData } from '../core/app.js';
 
@@ -13,7 +12,6 @@ function showAd() {
     const ad = ads[adIndex % ads.length];
     adIndex++;
 
-    // Create overlay
     const overlay = document.createElement('div');
     overlay.id = 'ad-overlay';
     overlay.innerHTML = `
@@ -24,25 +22,22 @@ function showAd() {
     `;
     document.body.appendChild(overlay);
 
-    // Countdown for close button
     let countdown = 10;
     const closeBtn = document.getElementById('ad-close');
     const timer = setInterval(() => {
         countdown--;
         closeBtn.textContent = `Close in ${countdown}`;
-        if (countdown <= 0) {
+        if(countdown <= 0) {
             clearInterval(timer);
             closeBtn.textContent = 'X';
             closeBtn.disabled = false;
         }
     }, 1000);
 
-    // Clicking ad text opens link AND unlocks next lesson
     const popup = document.getElementById('ad-popup');
     popup.addEventListener('click', (e) => {
         if (e.target.id !== 'ad-close') {
             window.open(ad.link, '_blank');
-
             if (userData.currentLesson < userData.totalLessons) {
                 userData.currentLesson++;
                 alert(`🎉 Bonus! You unlocked Lesson ${userData.currentLesson} early.`);
