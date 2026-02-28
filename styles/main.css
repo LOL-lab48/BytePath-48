@@ -1,116 +1,194 @@
+/* ===============================
+   GENERAL STYLES
+================================ */
+
 body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: #f4f6f9;
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
 }
 
 header {
-    background: linear-gradient(135deg, #2b2f77, #1d1f4d);
+    background: #111;
     color: white;
     padding: 20px;
     text-align: center;
 }
 
-.subtitle {
-    opacity: 0.8;
-    font-size: 14px;
+header h1 {
+    margin: 0;
 }
 
-#container {
+header p {
+    margin: 5px 0 0 0;
+}
+
+/* ===============================
+   LAYOUT
+================================ */
+
+.layout {
     display: flex;
-    height: calc(100vh - 100px);
+    min-height: 90vh;
 }
 
-aside {
+.sidebar {
     width: 250px;
-    background: white;
-    border-right: 1px solid #ddd;
-    padding: 15px;
-    overflow-y: auto;
-}
-
-aside ul {
-    list-style: none;
-    padding: 0;
-}
-
-aside li {
-    padding: 8px;
-    margin-bottom: 5px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-}
-
-aside li.unlocked {
-    background: #e3f2fd;
-}
-
-aside li.locked {
-    background: #f5f5f5;
-    color: #999;
-}
-
-aside li:hover {
-    background: #bbdefb;
-}
-
-main {
-    flex: 1;
+    background: #222;
+    color: white;
     padding: 20px;
     overflow-y: auto;
 }
 
-#lesson-text {
-    margin-bottom: 20px;
+.sidebar h2 {
+    margin-top: 0;
 }
 
-#editor-container {
-    border: 2px solid #ccc;
-    border-radius: 8px;
-    background: #1e1e1e;
+.sidebar ul {
+    list-style: none;
+    padding: 0;
 }
 
-#editor {
-    min-height: 220px;
-    padding: 15px;
-    color: #00ff88;
-    font-family: monospace;
-    outline: none;
-    white-space: pre-wrap;
-}
-
-button {
-    padding: 10px 18px;
-    margin-top: 10px;
-    margin-right: 8px;
-    border-radius: 6px;
-    border: none;
-    font-weight: bold;
+.sidebar li {
+    padding: 8px;
+    margin-bottom: 5px;
     cursor: pointer;
-    transition: 0.2s;
+    border-radius: 5px;
 }
 
-#check-btn {
-    background: #4caf50;
+.sidebar li.unlocked {
+    background: #2ecc71;
+}
+
+.sidebar li.locked {
+    background: #555;
+    opacity: 0.6;
+}
+
+.sidebar li:hover {
+    opacity: 0.9;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
+
+/* ===============================
+   EDITOR
+================================ */
+
+.editor {
+    background: #1e1e1e;
+    color: #00ff99;
+    padding: 15px;
+    min-height: 200px;
+    border-radius: 8px;
+    font-family: monospace;
+    margin-bottom: 15px;
+    white-space: pre-wrap;
+    overflow-x: auto;
+}
+
+/* ===============================
+   BUTTONS
+================================ */
+
+.primary-btn {
+    padding: 10px 20px;
+    background: #3498db;
     color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 10px;
 }
 
-#check-btn:hover {
-    background: #45a049;
-}
-
-#ad-unlock-btn {
-    background: #ff9800;
-    color: white;
-}
-
-#midnight-unlock-btn {
-    background: #2196f3;
-    color: white;
+.primary-btn:hover {
+    background: #2980b9;
 }
 
 #feedback-container {
     margin-top: 10px;
     font-weight: bold;
+}
+
+#unlock-container button {
+    margin: 5px;
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    background: #f39c12;
+    color: white;
+}
+
+#unlock-container button:hover {
+    background: #e67e22;
+}
+
+/* ===============================
+   AD OVERLAY
+================================ */
+
+#ad-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.ad-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    width: 320px;
+    position: relative;
+}
+
+.ad-box h2 {
+    margin-top: 0;
+}
+
+.ad-box p {
+    margin: 10px 0;
+}
+
+.ad-box a {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 10px 15px;
+    background: #2ecc71;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.ad-box a:hover {
+    background: #27ae60;
+}
+
+.ad-box #ad-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #e74c3c;
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 50%;
+    cursor: not-allowed;
+}
+
+.ad-box #ad-close-btn:enabled {
+    cursor: pointer;
+    background: #c0392b;
 }
