@@ -7,7 +7,7 @@ let currentLessonData = null;
 let adCooldown = false;
 
 /* ================================
-   RENDER SIDEBAR
+   RENDER LESSON LIST
 ================================ */
 
 export function renderLessonList(containerId) {
@@ -71,7 +71,7 @@ export function showLessonContent(lesson) {
 }
 
 /* ================================
-   AD SYSTEM (NEW)
+   AD SYSTEM
 ================================ */
 
 function simulateAdWatch() {
@@ -85,22 +85,32 @@ function simulateAdWatch() {
 
     let seconds = 10;
     const countdown = document.getElementById("ad-countdown");
+    const closeBtn = document.getElementById("ad-close-btn");
+
+    // Disable X button initially
+    closeBtn.disabled = true;
 
     const timer = setInterval(() => {
-        seconds--;
         countdown.textContent = seconds;
+        seconds--;
 
-        if (seconds <= 0) {
+        if (seconds < 0) {
             clearInterval(timer);
+            // Enable X button after countdown
+            closeBtn.disabled = false;
+        }
+    }, 1000);
+
+    closeBtn.onclick = () => {
+        if (!closeBtn.disabled) {
             closeAdOverlay();
             unlockNextLesson();
             startAdCooldown();
         }
-    }, 1000);
+    };
 }
 
 function createAdOverlay() {
-
     const overlay = document.createElement("div");
     overlay.id = "ad-overlay";
 
@@ -112,6 +122,7 @@ function createAdOverlay() {
                 Visit Now
             </a>
             <p>Unlocking in <span id="ad-countdown">10</span> seconds...</p>
+            <button id="ad-close-btn">X</button>
         </div>
     `;
 
@@ -125,7 +136,6 @@ function closeAdOverlay() {
 
 function startAdCooldown() {
     adCooldown = true;
-
     setTimeout(() => {
         adCooldown = false;
     }, 180000); // 3 minutes
@@ -136,7 +146,6 @@ function startAdCooldown() {
 ================================ */
 
 function checkMidnightUnlock() {
-
     const now = new Date();
     const today = now.toDateString();
 
