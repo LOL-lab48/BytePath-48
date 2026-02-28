@@ -1,34 +1,45 @@
-import { runJSCode } from './executionEngine.js';
+// core/gradingEngine.js
 
-export async function gradeLesson(userCode, lessonRequirements) {
-    let feedback = [];
-    let passed = true;
+export function gradeLesson(userCode, lesson) {
+    let feedback = "";
+    let isCorrect = false;
 
-    if (lessonRequirements.mustContain) {
-        lessonRequirements.mustContain.forEach((keyword) => {
-            if (!userCode.includes(keyword)) {
-                feedback.push(`❌ Your code is missing: ${keyword}`);
-                passed = false;
-            }
-        });
-    }
+    try {
+        // Capture console output
+        let output = "";
+        const originalConsoleLog = console.log;
+        console.log = (...args) => {
+            output += args.join(" ") + "\n";
+        };
 
-    if (lessonRequirements.language === "javascript") {
-        const result = await runJSCode(userCode);
+        // Execute user code safely
+        const fn = new Function(userCode);
+        fn();
 
-        if (result.error) {
-            feedback.push(`❌ Runtime error: ${result.error}`);
-            passed = false;
+        console.log = originalConsoleLog;
+
+        const expectedOutput = lesson.example.replace(/[\r\n]+/g, "\n").trim();
+        const userOutput = output.trim();
+
+        // Multiple possible responses based on what they did
+        if (userOutput === expectedOutput) {
+            isCorrect = true;
+            feedback = "✅ Perfect! You matched the example exactly.";
+        } else if (userOutput.includes(expectedOutput.split(" ")[0])) {
+            feedback = "👍 Good attempt! You got part of it right. Check for missing words, punctuation, or variable names.";
+        } else if (userOutput.length === 0) {
+            feedback = "⚠️ Your code didn't produce any output. Did you forget to use console.log?";
+        } else if (/error/i.test(userOutput)) {
+            feedback = `❌ There was an error in your code: ${userOutput}. Check syntax and spelling.`;
+        } else if (/let|const|var/.test(userCode)) {
+            feedback = "💡 You declared a variable correctly, but did you print it?";
+        } else {
+            feedback = "🤔 Something isn't quite right. Compare your output to the example carefully.";
         }
 
-        if (lessonRequirements.expectedOutput &&
-            result.output.trim() !== lessonRequirements.expectedOutput.trim()) {
-            feedback.push(`❌ Output mismatch. Expected: "${lessonRequirements.expectedOutput}", Got: "${result.output}"`);
-            passed = false;
-        } else if (lessonRequirements.expectedOutput) {
-            feedback.push(`✅ Output matches expected result`);
-        }
+    } catch (err) {
+        feedback = `❌ Error in your code: ${err.message}`;
     }
 
-    return { passed, feedback };
+    return { isCorrect, feedback };
 }
