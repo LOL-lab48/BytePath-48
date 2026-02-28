@@ -2,6 +2,7 @@
 
 import { userData, saveUserData } from '../core/userData.js';
 import { lessons } from '../lessons.config.js';
+import { gradeLesson } from '../core/gradingEngine.js';
 
 let currentLessonData = null;
 let adCooldown = false;
@@ -59,19 +60,26 @@ export function showLessonContent(lesson) {
     `;
 
     editor.textContent = lesson.starterCode;
-    feedbackContainer.innerHTML = '';
 
-    // Add grading button
+    // CLEAR feedback area safely
+    feedbackContainer.innerHTML = "";
+
+    // CREATE SINGLE CHECK BUTTON
     const gradeBtn = document.createElement('button');
     gradeBtn.textContent = "Check My Code";
     gradeBtn.className = "primary-btn";
+
+    // CREATE FEEDBACK DISPLAY AREA
+    const feedbackMessage = document.createElement('div');
+    feedbackMessage.className = "feedback-message";
+
     gradeBtn.onclick = () => {
-        import('../core/gradingEngine.js').then(({ gradeLesson }) => {
-            const result = gradeLesson(editor.textContent, lesson);
-            feedbackContainer.innerHTML = result.feedback;
-        });
+        const result = gradeLesson(editor.textContent, lesson);
+        feedbackMessage.innerHTML = result.feedback;
     };
+
     feedbackContainer.appendChild(gradeBtn);
+    feedbackContainer.appendChild(feedbackMessage);
 
     unlockContainer.innerHTML = `
         <button id="ad-unlock-btn">Watch Ad (10s)</button>
@@ -83,7 +91,7 @@ export function showLessonContent(lesson) {
 }
 
 /* ================================
-   AD SYSTEM WITH 3 RANDOM ADS
+   AD SYSTEM
 ================================ */
 
 const ads = [
@@ -99,7 +107,7 @@ const ads = [
     },
     {
         title: "Mud Mavericks",
-        description: "Fast-paced motocross board game full of jumps, hazards, and boosts.",
+        description: "Fast-paced motocross board game full of jumps and boosts.",
         link: "https://lol-lab48.github.io/mud-mavericks/"
     }
 ];
@@ -164,7 +172,7 @@ function startAdCooldown() {
     adCooldown = true;
     setTimeout(() => {
         adCooldown = false;
-    }, 180000); // 3 minutes
+    }, 180000);
 }
 
 /* ================================
