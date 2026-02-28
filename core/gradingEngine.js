@@ -1,44 +1,65 @@
 // core/gradingEngine.js
 
 export function gradeLesson(userCode, lesson) {
+
     let feedback = "";
     let isCorrect = false;
 
     try {
-        // Capture console output
-        let output = "";
+
+        // ===== CAPTURE USER OUTPUT =====
+        let userOutput = "";
         const originalConsoleLog = console.log;
+
         console.log = (...args) => {
-            output += args.join(" ") + "\n";
+            userOutput += args.join(" ") + "\n";
         };
 
-        // Execute user code safely
-        const fn = new Function(userCode);
-        fn();
+        new Function(userCode)();
+
+        // ===== CAPTURE EXPECTED OUTPUT =====
+        let expectedOutput = "";
+
+        console.log = (...args) => {
+            expectedOutput += args.join(" ") + "\n";
+        };
+
+        new Function(lesson.example)();
 
         console.log = originalConsoleLog;
 
-        const expectedOutput = lesson.example.replace(/[\r\n]+/g, "\n").trim();
-        const userOutput = output.trim();
+        userOutput = userOutput.trim();
+        expectedOutput = expectedOutput.trim();
 
-        // Multiple possible responses based on what they did
+        // ===== GRADING LOGIC =====
+
         if (userOutput === expectedOutput) {
             isCorrect = true;
-            feedback = "✅ Perfect! You matched the example exactly.";
-        } else if (userOutput.includes(expectedOutput.split(" ")[0])) {
-            feedback = "👍 Good attempt! You got part of it right. Check for missing words, punctuation, or variable names.";
-        } else if (userOutput.length === 0) {
-            feedback = "⚠️ Your code didn't produce any output. Did you forget to use console.log?";
-        } else if (/error/i.test(userOutput)) {
-            feedback = `❌ There was an error in your code: ${userOutput}. Check syntax and spelling.`;
-        } else if (/let|const|var/.test(userCode)) {
-            feedback = "💡 You declared a variable correctly, but did you print it?";
-        } else {
-            feedback = "🤔 Something isn't quite right. Compare your output to the example carefully.";
+            feedback = "✅ Perfect! That is exactly correct. Great work!";
+        }
+
+        else if (userOutput.length === 0) {
+            feedback = "⚠️ Your code didn't print anything. Did you forget console.log()?";
+        }
+
+        else if (!userCode.includes("console.log")) {
+            feedback = "💡 You wrote code, but you need to use console.log() to print your answer.";
+        }
+
+        else if (userOutput.toLowerCase() === expectedOutput.toLowerCase()) {
+            feedback = "👍 Almost perfect! Check capital letters and punctuation.";
+        }
+
+        else if (userOutput.includes(expectedOutput.split(" ")[0])) {
+            feedback = "🙂 You're close! Compare your output carefully to the example.";
+        }
+
+        else {
+            feedback = "❌ Not quite right. Look carefully at the example and match it exactly.";
         }
 
     } catch (err) {
-        feedback = `❌ Error in your code: ${err.message}`;
+        feedback = "❌ There is an error in your code: " + err.message;
     }
 
     return { isCorrect, feedback };
