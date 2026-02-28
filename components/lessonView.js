@@ -7,7 +7,7 @@ let currentLessonData = null;
 let adCooldown = false;
 
 /* ================================
-   RENDER LESSON LIST
+   LESSON LIST
 ================================ */
 
 export function renderLessonList(containerId) {
@@ -41,7 +41,6 @@ export function renderLessonList(containerId) {
 ================================ */
 
 export function showLessonContent(lesson) {
-
     currentLessonData = lesson;
 
     const lessonText = document.getElementById('lesson-text');
@@ -74,20 +73,39 @@ export function showLessonContent(lesson) {
    AD SYSTEM
 ================================ */
 
-function simulateAdWatch() {
+// Define 3 ads
+const ads = [
+    {
+        title: "WhatABetterDeal",
+        description: "Amazing deals await! Check it out now!",
+        link: "https://lol-lab48.github.io/WhatABetterDeal/"
+    },
+    {
+        title: "LokiGen Passwords",
+        description: "Generate fast, secure passwords including symbols, numbers, uppercase.",
+        link: "https://lol-lab48.github.io/LockiGen/"
+    },
+    {
+        title: "Mud Mavericks",
+        description: "Fast-paced motocross board game full of jumps, hazards, and boosts.",
+        link: "https://lol-lab48.github.io/mud-mavericks/"
+    }
+];
 
+function simulateAdWatch() {
     if (adCooldown) {
         alert("You must wait 3 minutes before watching another ad.");
         return;
     }
 
-    createAdOverlay();
+    // Pick a random ad (equal chance)
+    const randomAd = ads[Math.floor(Math.random() * ads.length)];
+    createAdOverlay(randomAd);
 
     let seconds = 10;
     const countdown = document.getElementById("ad-countdown");
     const closeBtn = document.getElementById("ad-close-btn");
 
-    // Disable X button initially
     closeBtn.disabled = true;
 
     const timer = setInterval(() => {
@@ -96,7 +114,6 @@ function simulateAdWatch() {
 
         if (seconds < 0) {
             clearInterval(timer);
-            // Enable X button after countdown
             closeBtn.disabled = false;
         }
     }, 1000);
@@ -110,17 +127,15 @@ function simulateAdWatch() {
     };
 }
 
-function createAdOverlay() {
+function createAdOverlay(ad) {
     const overlay = document.createElement("div");
     overlay.id = "ad-overlay";
 
     overlay.innerHTML = `
         <div class="ad-box">
-            <h2>Sponsored Ad</h2>
-            <p>Check out WhatABetterDeal!</p>
-            <a href="https://lol-lab48.github.io/WhatABetterDeal/" target="_blank">
-                Visit Now
-            </a>
+            <h2>${ad.title}</h2>
+            <p>${ad.description}</p>
+            <a href="${ad.link}" target="_blank">Visit Now</a>
             <p>Unlocking in <span id="ad-countdown">10</span> seconds...</p>
             <button id="ad-close-btn">X</button>
         </div>
