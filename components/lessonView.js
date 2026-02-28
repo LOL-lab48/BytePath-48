@@ -41,6 +41,7 @@ export function renderLessonList(containerId) {
 ================================ */
 
 export function showLessonContent(lesson) {
+
     currentLessonData = lesson;
 
     const lessonText = document.getElementById('lesson-text');
@@ -60,6 +61,18 @@ export function showLessonContent(lesson) {
     editor.textContent = lesson.starterCode;
     feedbackContainer.innerHTML = '';
 
+    // Add grading button
+    const gradeBtn = document.createElement('button');
+    gradeBtn.textContent = "Check My Code";
+    gradeBtn.className = "primary-btn";
+    gradeBtn.onclick = () => {
+        import('../core/gradingEngine.js').then(({ gradeLesson }) => {
+            const result = gradeLesson(editor.textContent, lesson);
+            feedbackContainer.innerHTML = result.feedback;
+        });
+    };
+    feedbackContainer.appendChild(gradeBtn);
+
     unlockContainer.innerHTML = `
         <button id="ad-unlock-btn">Watch Ad (10s)</button>
         <button id="midnight-unlock-btn">Wait Until Midnight</button>
@@ -70,10 +83,9 @@ export function showLessonContent(lesson) {
 }
 
 /* ================================
-   AD SYSTEM
+   AD SYSTEM WITH 3 RANDOM ADS
 ================================ */
 
-// Define 3 ads
 const ads = [
     {
         title: "WhatABetterDeal",
@@ -98,7 +110,6 @@ function simulateAdWatch() {
         return;
     }
 
-    // Pick a random ad (equal chance)
     const randomAd = ads[Math.floor(Math.random() * ads.length)];
     createAdOverlay(randomAd);
 
