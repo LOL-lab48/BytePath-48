@@ -2,13 +2,12 @@
 
 import { userData, saveUserData } from '../core/userData.js';
 import { lessons } from '../lessons.config.js';
-import { gradeLesson } from '../core/gradingEngine.js';
 
 let currentLessonData = null;
 let adCooldown = false;
 
 /* ================================
-   LESSON LIST
+   RENDER LESSON LIST
 ================================ */
 
 export function renderLessonList(containerId) {
@@ -38,7 +37,7 @@ export function renderLessonList(containerId) {
 }
 
 /* ================================
-   SHOW LESSON
+   SHOW LESSON CONTENT
 ================================ */
 
 export function showLessonContent(lesson) {
@@ -61,25 +60,9 @@ export function showLessonContent(lesson) {
 
     editor.textContent = lesson.starterCode;
 
-    // CLEAR feedback area safely
-    feedbackContainer.innerHTML = "";
-
-    // CREATE SINGLE CHECK BUTTON
-    const gradeBtn = document.createElement('button');
-    gradeBtn.textContent = "Check My Code";
-    gradeBtn.className = "primary-btn";
-
-    // CREATE FEEDBACK DISPLAY AREA
-    const feedbackMessage = document.createElement('div');
-    feedbackMessage.className = "feedback-message";
-
-    gradeBtn.onclick = () => {
-        const result = gradeLesson(editor.textContent, lesson);
-        feedbackMessage.innerHTML = result.feedback;
-    };
-
-    feedbackContainer.appendChild(gradeBtn);
-    feedbackContainer.appendChild(feedbackMessage);
+    // IMPORTANT:
+    // We DO NOT create a grading button here.
+    // Your existing grading system handles that.
 
     unlockContainer.innerHTML = `
         <button id="ad-unlock-btn">Watch Ad (10s)</button>
@@ -91,7 +74,7 @@ export function showLessonContent(lesson) {
 }
 
 /* ================================
-   AD SYSTEM
+   AD SYSTEM (3 Ads, Random, 10s Lock, 3min Cooldown)
 ================================ */
 
 const ads = [
@@ -102,7 +85,7 @@ const ads = [
     },
     {
         title: "LokiGen Passwords",
-        description: "Generate fast, secure passwords including symbols, numbers, uppercase.",
+        description: "Generate secure passwords fast with symbols, numbers, and uppercase.",
         link: "https://lol-lab48.github.io/LockiGen/"
     },
     {
@@ -113,6 +96,7 @@ const ads = [
 ];
 
 function simulateAdWatch() {
+
     if (adCooldown) {
         alert("You must wait 3 minutes before watching another ad.");
         return;
@@ -147,6 +131,7 @@ function simulateAdWatch() {
 }
 
 function createAdOverlay(ad) {
+
     const overlay = document.createElement("div");
     overlay.id = "ad-overlay";
 
@@ -172,7 +157,7 @@ function startAdCooldown() {
     adCooldown = true;
     setTimeout(() => {
         adCooldown = false;
-    }, 180000);
+    }, 180000); // 3 minutes
 }
 
 /* ================================
@@ -180,6 +165,7 @@ function startAdCooldown() {
 ================================ */
 
 function checkMidnightUnlock() {
+
     const now = new Date();
     const today = now.toDateString();
 
@@ -202,6 +188,7 @@ function checkMidnightUnlock() {
 ================================ */
 
 function unlockNextLesson() {
+
     if (userData.currentLesson < userData.totalLessons) {
         userData.currentLesson++;
         saveUserData();
